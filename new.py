@@ -138,20 +138,74 @@ class BinarySearchTree:
             self.data = min_val
             self.right = self.right.delete(min_val)
         return self
+
+
+    def invert(self):
+        node = self.data
+        if node is None:
+            return 
+        if self.left is None or self.right is None:
+            return
+        else:
+            temp = node
+            self.left.invert()
+            self.right.invert()
+            temp = self.left
+            self.left = self.right
+            self.right = temp
+
+    def invert_tree_iterative(self, root):
+        stack = [root]
+        while len(stack) > 0:
+            node = stack.pop()
+            if node is not None:
+                hold = node.left
+                node.left = node.right
+                node.right = hold
+
+                stack.append(node.left)
+                stack.append(node.right)
+        return root
+
+    def invert_tree_recursive(self, root):
+        node = self.data
+        def invertNodes(node):
+            if node is None:
+                return
+            invertNodes(node.left)
+            invertNodes(node.right)
+            hold = node.left
+            node.left = node.right
+            node.right = hold
+
+        invertNodes(root)
+
+
+
+
+
+     
             
 
 if __name__ == "__main__":
-    
     arr = [6,3,2,9,12,1,0,8]
     root = BinarySearchTree(7)
     root.build_tree_method(arr)
-    # traverse_inorder_iter(root)
-    print(root.traverse_inorder())
-    print(root.calculate_sum())
-    print(root.find_min_recur())
-    print(root.find_max_recur())
-    root.delete(12)
-    print(root.traverse_inorder())
+    # # traverse_inorder_iter(root)
+    # print(root.traverse_inorder())
+    # print(root.calculate_sum())
+    # print(root.find_min_recur())
+    # print(root.find_max_recur())
+    # root.delete(12)
+    print(root.traverse_preorder())
+    root.invert_tree_recursive(root)
+    print(root.traverse_preorder())
+    root.invert_tree_iterative(root)
+    print(root.traverse_preorder())
+
+
+
+
 
     # binary_tree = build_tree(arr)
     # root = BinarySearchTree(5)
